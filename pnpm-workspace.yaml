@@ -1,0 +1,10 @@
+packages:
+  # 存放组件库和其他工具库
+  - 'packages/*'
+  # 存放组件测试的代码
+  # 标注组件
+  - 'label_plugin'
+  # 基础图形组件
+  - 'graphics_plugin'
+  # 基础图形组件
+  - 'common_plugin'
