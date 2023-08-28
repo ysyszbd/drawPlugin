@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "common_plugin": "workspace:^",
+    "node-sass": "^9.0.0",
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
