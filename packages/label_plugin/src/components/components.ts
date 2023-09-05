@@ -1,5 +1,5 @@
-import bigDraw from "./draw_box.vue";
+import mainDraw from "./draw_box.vue";
 
 export {
-  bigDraw
+  mainDraw
 };
