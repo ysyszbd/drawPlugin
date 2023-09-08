@@ -1,10 +1,15 @@
 /*
- * @LastEditTime: 2023-08-24 16:21:32
+ * @LastEditTime: 2023-09-07 11:17:34
  * @Description: 
  */
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import router from "./route/index";
+import publicContorl from "./contorls/public_contorl";
 
-createApp(App).use(router).mount("#app");
+const app: any = createApp(App).use(router);
+
+app.config.globalProperties.$publicContorl = new publicContorl();
+
+app.mount("#app")

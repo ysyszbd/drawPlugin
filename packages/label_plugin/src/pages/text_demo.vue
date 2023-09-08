@@ -1,15 +1,20 @@
 <!--
- * @LastEditTime: 2023-09-05 15:39:08
+ * @LastEditTime: 2023-09-07 14:34:48
  * @Description: 
 -->
 <template>
   <div class="my_page">
     <!-- 操作控制 -->
     <div class="handle_tools">
-      <div v-for="(ele, index) in handleTools" :key="index" class="tool_item">{{ ele.value }}</div>
-      <div class="handle_over">
-        结束
+      <div
+        v-for="(ele, index) in handleTools"
+        :key="index"
+        class="tool_item"
+        @click="handleAdd(ele.key, true)"
+      >
+        {{ ele.value }}
       </div>
+      <div class="handle_over">结束</div>
     </div>
     <mainDraw
       :base_config="{
@@ -17,6 +22,11 @@
         width: 1220,
         height: 813,
         src: demo_img,
+        canvas_id: 'DRAW_CANVAS',
+      }"
+      :contorls="{
+        line: line,
+        '2D': null,
       }"
     />
   </div>
@@ -26,28 +36,32 @@
 // import { UTILS, GRAPH } from "common_plugin";
 import lineContorl from "../contorls/line_contorl";
 import { mainDraw } from "../components/components";
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import demo_img from "./3.jpg";
 
-const Line = new lineContorl({
-    pointsNum: 2,
+const app: any = getCurrentInstance(),
+  line = new lineContorl({
+    pointsMaxNum: 2,
+    exceed: true
   }),
   handleTools = [
     {
       key: "line",
-      value: "线条"
+      value: "线条",
     },
     {
       key: "2D",
-      value: "2D"
+      value: "2D",
     },
     {
       key: "ray",
-      value: "箭头"
+      value: "箭头",
     },
   ];
-// Line.value = new GRAPH.lineContorl({ pointsNum: 2 });
-// console.log(UTILS, GRAPH, "UTILS, GRAPH");
+
+function handleAdd(key: string, sign: boolean) {
+  app.appContext.config.globalProperties.$publicContorl.recordFun(key, sign);
+}
 </script>
 
 <style lang="scss" scoped>
