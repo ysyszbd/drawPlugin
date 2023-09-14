@@ -1,0 +1,100 @@
+<!--
+ * @LastEditTime: 2023-09-14 17:12:54
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    function twoSum(nums, target) {
+      // let i = 0;
+      let map = new Map();
+      for (let i = 0; i < nums.length; i++) {
+        if (map.has(target - nums[i])) {
+          return [map.get(target - nums[i]), i];
+        }else {
+          map.set(nums[i], i);
+        }
+      }
+      console.log(map, "map");
+    }
+    // 字母异位词分组
+    function groupAnagrams(strs) {
+      if (strs.length === 1) return [strs];
+      let map = new Map();
+      for(let i = 0; i < strs.length; i++) {
+        let a = strs[i].split("").sort().join();
+        // debugger
+        console.log(a, "sort====", map.has(a));
+        if (map.has(a)) {
+          map.get(a).push(strs[i]);
+        }else {
+          map.set(a, [strs[i]])
+        }
+      }
+      return [...map.values()]
+    };
+    // 128. 最长连续序列-------------未完成
+    function longestConsecutive(nums) {
+      nums = nums.sort();
+      const nums_arr = Array.from(new Set(nums));
+      if (nums_arr.length === 0) return 0;
+      console.log(nums_arr, "nums_arr");
+      let map = new Map(), max = 1, current = 0;
+      for(let i = 1; i < nums_arr.length; i++) {
+        if (nums_arr[i] === nums_arr[i-1] + 1) {
+          max++;
+          max = Math.max(max, current);
+        }else {
+          current = 1;
+        }
+      }
+      console.log(max, "max");
+    }
+    // 以上是使用哈希表对数据进行存储和拿取，以此来达到效果
+    // 283. 移动零
+    function moveZeroes(nums) {
+      let l = 0, r = 0;
+      while(r < nums.length) {
+        if (nums[r] !== 0) {
+          while(nums[l] !== 0 && l < r) {
+            l++;
+          }
+          [nums[l], nums[r]] = [nums[r], nums[l]];
+        }
+        r++;
+      }
+      console.log(nums, "------");
+      return nums;
+    }
+    // 11. 盛最多水的容器
+    // 使用双头指针，两边夹击，哪边小移动哪边，一直到中间位置，过程中一直对比max
+    function maxArea(height) {
+        let l = 0, r = height.length -1, max = 0;
+        while(l < height.length && r > l) {
+          max = Math.max(max, (r - l) * Math.min(height[l], height[r]));
+          if (height[l] <= height[r]) {
+            l++;
+          }else {
+            r--;
+          }
+        }
+        return max;
+    }
+    // 15. 三数之和
+    function threeSum(nums) {
+      
+    }
+    console.log(threeSum([-1,0,1,2,-1,-4]), "-----");
+  </script>
+</html>
