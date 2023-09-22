@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2023-09-08 16:10:44
+ * @LastEditTime: 2023-09-22 17:25:21
  * @Description: 
 -->
 <template>
@@ -39,6 +39,13 @@
         class="main_item"
       ></canvas>
       <canvas id="handle_canvas" class="main_item"></canvas>
+      <svg
+        id="draw_svg"
+        class="main_item svg_item"
+        version="1.1"
+        baseProfile="full"
+        xmlns="http://www.w3.org/2000/svg"
+      ></svg>
     </div>
   </div>
 </template>
@@ -46,17 +53,29 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, getCurrentInstance } from "vue";
 import baseContorl from "../contorls/base_contorl";
+import { SVG } from "@svgdotjs/svg.js";
+import { ObserverInstance } from "../event/observer";
+import { drawEvents } from "../event/events";
 
 const props = defineProps(["base_config", "contorls"]);
+const observerListenerList = [
+  {
+    eventName: drawEvents.DRAW_OVER,
+    fn: drawOver.bind(this),
+  },
+];
 const app: any = getCurrentInstance(),
   baseStyle = ref(
     `width: ${(props.base_config?.width || 1920) * 0.9}px; height: ${
       (props.base_config?.height || 1280) * 0.9
     }px;`
   ),
+  DRAW_SVG = ref(null),
   publicContorl = app.appContext.config.globalProperties.$publicContorl,
   base_contorl: any = ref(null);
+ObserverInstance.selfAddListenerList(observerListenerList, "draw_box");
 onMounted(() => {
+  DRAW_SVG.value = SVG("#draw_svg");
   const canvas_dom = document.getElementById(
     props.base_config?.canvas_id ? props.base_config?.canvas_id : "draw_canvas"
   ) as HTMLCanvasElement;
@@ -78,23 +97,39 @@ function mouseMoveFun(e) {
   e.stopPropagation();
   const contorl = props.contorls[publicContorl.drawConfig.type];
   if (!contorl) return;
-  contorl.moveFun(base_contorl.value.drawContext, e.offsetX, e.offsetY);
+  if (
+    publicContorl.drawConfig.type === "line" &&
+    contorl.drawConfig.points.length >= contorl.configData.pointsMaxNum
+  )
+    return;
+  contorl.drawMoveFun(e.offsetX, e.offsetY);
 }
 // 图片操作区域的点击事件
 function mouseDownFun(e) {
+  console.log("mouseDownFun");
+  
   e.stopPropagation();
   const contorl = props.contorls[publicContorl.drawConfig.type];
   if (!contorl) return;
   console.log(e, "e----mouseDownFun");
-  base_contorl.value.drawPoint(e.offsetX, e.offsetY);
-  contorl.downFun(base_contorl.value.handleContext, e.offsetX, e.offsetY);
-
+  contorl.drawDownFun(e.offsetX, e.offsetY);
+  if (
+    publicContorl.drawConfig.type === "line" &&
+    contorl.drawConfig.points.length > contorl.configData.pointsMaxNum
+  )
+    return;
+  base_contorl.value.drawPoint(base_contorl.value.drawContext, e.offsetX, e.offsetY);
 }
 // 大操作区域的点击事件
 function mouseDownExceed(e) {
   const contorl = props.contorls[publicContorl.drawConfig.type];
   if (!contorl.configData.exceed) return;
+
   console.log(e, "e----mouseDownExceed");
+}
+// 创建结束---
+function drawOver(data: any) {
+  console.log(data, "data");
 }
 
 function resizeWheel(e: any) {
@@ -119,6 +154,10 @@ function resizeWheel(e: any) {
       left: 0;
       top: 0;
       color: rgb(255, 0, 0);
+    }
+    .svg_item {
+      width: 100%;
+      height: 100%;
     }
 
     .bg_img {

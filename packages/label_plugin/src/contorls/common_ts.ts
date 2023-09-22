@@ -6,4 +6,5 @@ export interface lineDrawConfig {
   start: boolean
   end: boolean
   points: [any]
+  nums: number
 }

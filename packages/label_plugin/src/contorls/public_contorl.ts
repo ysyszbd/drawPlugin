@@ -9,8 +9,9 @@ class publicContorl {
   domId = "";
   dom: HTMLElement | null = null;
   drawConfig = {
-    type: "",    // 当前操作的类型
+    type: "",    // 当前操作的图形类型
     sign: false, // 当前是否处于操作进行中的状态
+    status: "edit", // 当前是什么状态  edit：编辑；add：创建
   }
   TAG = "public"
 
@@ -28,9 +29,10 @@ class publicContorl {
   // 画板渲染
 
   // 操作状态记录
-  recordFun(type: string, sign: boolean) {
+  recordFun(type: string, sign: boolean, status: string) {
     this.drawConfig.type = type;
     this.drawConfig.sign = sign;
+    this.drawConfig.status = status;
     console.log(this, this.TAG);
     
   }

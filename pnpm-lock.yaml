@@ -26,9 +26,15 @@ importers:
 
   packages/label_plugin:
     dependencies:
+      '@svgdotjs/svg.js':
+        specifier: ^3.2.0
+        version: registry.npmmirror.com/@svgdotjs/svg.js@3.2.0
       common_plugin:
         specifier: workspace:^
         version: link:../common_plugin
+      eventemitter3:
+        specifier: ^5.0.1
+        version: registry.npmmirror.com/eventemitter3@5.0.1
       node-sass:
         specifier: ^9.0.0
         version: registry.npmmirror.com/node-sass@9.0.0
@@ -450,6 +456,12 @@ packages:
     dependencies:
       mkdirp: registry.npmmirror.com/mkdirp@1.0.4
       rimraf: registry.npmmirror.com/rimraf@3.0.2
+    dev: false
+
+  registry.npmmirror.com/@svgdotjs/svg.js@3.2.0:
+    resolution: {integrity: sha512-Tr8p+QVP7y+QT1GBlq1Tt57IvedVH8zCPoYxdHLX0Oof3a/PqnC/tXAkVufv1JQJfsDHlH/UrjcDfgxSofqSNA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@svgdotjs/svg.js/-/svg.js-3.2.0.tgz}
+    name: '@svgdotjs/svg.js'
+    version: 3.2.0
     dev: false
 
   registry.npmmirror.com/@tootallnate/once@1.1.2:

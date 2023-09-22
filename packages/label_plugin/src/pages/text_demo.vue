@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2023-09-07 14:34:48
+ * @LastEditTime: 2023-09-21 14:28:58
  * @Description: 
 -->
 <template>
@@ -36,14 +36,11 @@
 // import { UTILS, GRAPH } from "common_plugin";
 import lineContorl from "../contorls/line_contorl";
 import { mainDraw } from "../components/components";
-import { ref, getCurrentInstance } from "vue";
+import { getCurrentInstance, onMounted, ref } from "vue";
 import demo_img from "./3.jpg";
 
 const app: any = getCurrentInstance(),
-  line = new lineContorl({
-    pointsMaxNum: 2,
-    exceed: true
-  }),
+  line: any = ref(null),
   handleTools = [
     {
       key: "line",
@@ -58,9 +55,18 @@ const app: any = getCurrentInstance(),
       value: "箭头",
     },
   ];
-
+onMounted(() => {
+  line.value = new lineContorl({
+    pointsMaxNum: 2,
+    exceed: true,
+  })
+});
 function handleAdd(key: string, sign: boolean) {
-  app.appContext.config.globalProperties.$publicContorl.recordFun(key, sign);
+  app.appContext.config.globalProperties.$publicContorl.recordFun(
+    key,
+    sign,
+    "add"
+  );
 }
 </script>
 

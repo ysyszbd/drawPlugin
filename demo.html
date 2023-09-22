@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2023-09-14 17:12:54
+ * @LastEditTime: 2023-09-20 13:48:02
  * @Description: 
 -->
 <!DOCTYPE html>
@@ -22,7 +22,7 @@
       for (let i = 0; i < nums.length; i++) {
         if (map.has(target - nums[i])) {
           return [map.get(target - nums[i]), i];
-        }else {
+        } else {
           map.set(nums[i], i);
         }
       }
@@ -32,42 +32,43 @@
     function groupAnagrams(strs) {
       if (strs.length === 1) return [strs];
       let map = new Map();
-      for(let i = 0; i < strs.length; i++) {
+      for (let i = 0; i < strs.length; i++) {
         let a = strs[i].split("").sort().join();
         // debugger
         console.log(a, "sort====", map.has(a));
         if (map.has(a)) {
           map.get(a).push(strs[i]);
-        }else {
-          map.set(a, [strs[i]])
+        } else {
+          map.set(a, [strs[i]]);
         }
       }
-      return [...map.values()]
-    };
-    // 128. 最长连续序列-------------未完成
+      return [...map.values()];
+    }
+    // 128. 最长连续序列
     function longestConsecutive(nums) {
-      nums = nums.sort();
-      const nums_arr = Array.from(new Set(nums));
-      if (nums_arr.length === 0) return 0;
-      console.log(nums_arr, "nums_arr");
-      let map = new Map(), max = 1, current = 0;
-      for(let i = 1; i < nums_arr.length; i++) {
-        if (nums_arr[i] === nums_arr[i-1] + 1) {
-          max++;
-          max = Math.max(max, current);
-        }else {
-          current = 1;
+      const set = new Set(nums);
+      let max = 0;
+      // 只判断连续序列的起始数
+      for (val of set) {
+        if (!set.has(val - 1)) {
+          let count = 1; // 用来记录val+1的次数
+          while (set.has(val + 1)) {
+            val++;
+            count++;
+          }
+          max = Math.max(count, max);
         }
       }
-      console.log(max, "max");
+      return max;
     }
     // 以上是使用哈希表对数据进行存储和拿取，以此来达到效果
     // 283. 移动零
     function moveZeroes(nums) {
-      let l = 0, r = 0;
-      while(r < nums.length) {
+      let l = 0,
+        r = 0;
+      while (r < nums.length) {
         if (nums[r] !== 0) {
-          while(nums[l] !== 0 && l < r) {
+          while (nums[l] !== 0 && l < r) {
             l++;
           }
           [nums[l], nums[r]] = [nums[r], nums[l]];
@@ -80,21 +81,90 @@
     // 11. 盛最多水的容器
     // 使用双头指针，两边夹击，哪边小移动哪边，一直到中间位置，过程中一直对比max
     function maxArea(height) {
-        let l = 0, r = height.length -1, max = 0;
-        while(l < height.length && r > l) {
-          max = Math.max(max, (r - l) * Math.min(height[l], height[r]));
-          if (height[l] <= height[r]) {
-            l++;
-          }else {
-            r--;
-          }
+      let l = 0,
+        r = height.length - 1,
+        max = 0;
+      while (l < height.length && r > l) {
+        max = Math.max(max, (r - l) * Math.min(height[l], height[r]));
+        if (height[l] <= height[r]) {
+          l++;
+        } else {
+          r--;
         }
-        return max;
+      }
+      return max;
     }
     // 15. 三数之和
     function threeSum(nums) {
-      
+      nums = nums.sort((a, b) => {
+        return a - b;
+      });
+
+      for (let i = 0; i < nums.length; i++) {
+        if (i > 0 && nums[i] === nums[i - 1]) continue;
+        let first = nums[i],
+          second,
+          third;
+        
+      }
+      console.log(nums, "nums");
     }
-    console.log(threeSum([-1,0,1,2,-1,-4]), "-----");
+    function twoSumFun() {}
+    // 53. 最大子数组和
+    function maxSubArray(nums) {
+      if (nums.length <= 1) return nums[0];
+      let max = nums[0];
+      for (let i = 0; i < nums.length; i++) {
+        let j = i,
+          res = 0;
+        while (j < nums.length) {
+          res = nums[j] + res;
+          console.log(res, "res---max", max);
+          max = Math.max(max, res);
+          j++;
+        }
+      }
+      console.log(max, "max");
+    }
+    // 42. 接雨水
+    function trap(height) {
+      let temp = 0,
+        start = 1;
+      for (let i = 0; i < height.length; i++) {
+        // if (height)
+      }
+      // let l = 0,
+      //   r = 1,
+      //   res = 0;
+      //   debugger
+      // while (r < height.length) {
+      //   if (r - l === 1) {
+      //     if (height[r] >= height[l]) {
+      //       l = r;
+      //       r++;
+      //     }else {
+      //       r++;
+      //     }
+      //   }else {
+      //     // return
+      //     if (height[r] >= height[l]) {
+      //       let wall = Math.min(height[r], height[l]),
+      //         count = l + 1;
+      //       while(count < r) {
+      //         res = res + (wall - height[count]);
+      //         count++;
+      //       }
+      //       l = r;
+      //       r++;
+      //     }else {
+      //       r++;
+      //       // l++;
+      //       // return;
+      //     }
+      //   }
+      // }
+      // console.log(res, "res");
+    }
+    console.log(threeSum([-1, 0, 1, 2, -1, -4]), "-----");
   </script>
 </html>
